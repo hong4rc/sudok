@@ -1,0 +1,11 @@
+# Node module
+node_modules/
+
+# Vs Code
+.vscode/
+
+# Log
+package-lock.json
+
+# Npm pack
+*.tgz

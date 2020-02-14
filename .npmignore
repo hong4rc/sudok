@@ -1,0 +1,11 @@
+# Vs Code
+.vscode/
+
+# Examples
+examples/
+
+# Npm pack
+*.tgz
+
+# Eslint
+.eslintrc

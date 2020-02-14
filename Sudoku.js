@@ -29,7 +29,7 @@ class Sudoku {
 
   static str(grid) {
     let ret = '';
-    for (let row = 0; row < grid.length; row++) {
+    for (let row = 0; row < BIG_SQ; row++) {
       if (row > 0 && row % SMALL_SQ === 0) {
         ret = `${ret}------+-------+------ \n`;
       }
@@ -80,7 +80,7 @@ class Sudoku {
       let found = false;
       const { row, col } = rowCol;
       const mask = this.bitCandidates.getMask(row, col);
-      for (let val = 1; mask !== 0 && val <= 9; val++) {
+      for (let val = 1; mask !== 0 && val <= BIG_SQ; val++) {
         if ((mask & (1 << val - 1)) !== 0) {
           this.bitCandidates.useVal(row, col, val);
           this.grid[row][col] = val;
@@ -104,8 +104,8 @@ class Sudoku {
   // Initialise the candidates data structure by adding the numbers already on the grid
   initCandidates() {
     const bitCandidates = new BitCandidates();
-    for (let row = 0; row < this.grid.length; row++) {
-      for (let col = 0; col < this.grid[row].length; col++) {
+    for (let row = 0; row < BIG_SQ; row++) {
+      for (let col = 0; col < BIG_SQ; col++) {
         const val = this.grid[row][col];
         if (val) {
           bitCandidates.useVal(row, col, val);
@@ -122,8 +122,8 @@ class Sudoku {
   getTopmostCell(grid) {
     let topmostCell = null;
     let bestNumberOfOptions = Number.MAX_VALUE;
-    for (let row = 0; row < grid.length; row++) {
-      for (let col = 0; col < grid[row].length; col++) {
+    for (let row = 0; row < BIG_SQ; row++) {
+      for (let col = 0; col < BIG_SQ; col++) {
         if (!grid[row][col]) {
           const mask = this.bitCandidates.getMask(row, col);
           const numberOfOptions = Sudoku.countBits(mask);

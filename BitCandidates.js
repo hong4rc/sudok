@@ -7,13 +7,13 @@ class BitCandidates {
     this.colsMask = [];
     this.rowsMask = [];
     this.blocksMask = [];
-    for (let i = 0; i < 9; i++) {
+    for (let i = 0; i < BIG_SQ; i++) {
       this.colsMask[i] = ALL_BITS;
       this.rowsMask[i] = ALL_BITS;
-      if (!this.blocksMask[Math.trunc(i / 3)]) {
-        this.blocksMask[Math.trunc(i / 3)] = [];
+      if (!this.blocksMask[Math.trunc(i / SMALL_SQ)]) {
+        this.blocksMask[Math.trunc(i / SMALL_SQ)] = [];
       }
-      this.blocksMask[Math.trunc(i / 3)][i % 3] = ALL_BITS;
+      this.blocksMask[Math.trunc(i / SMALL_SQ)][i % SMALL_SQ] = ALL_BITS;
     }
   }
 
@@ -52,8 +52,8 @@ class BitCandidates {
    * Return the row and col of the block of the specified cell
    */
   static getBlockRowCol(row, col) {
-    const blockRow = Math.trunc(row / 3);
-    const blockCol = Math.trunc(col / 3);
+    const blockRow = Math.trunc(row / SMALL_SQ);
+    const blockCol = Math.trunc(col / SMALL_SQ);
     return { blockRow, blockCol };
   }
 }

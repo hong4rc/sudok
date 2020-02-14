@@ -27,10 +27,19 @@ class BitCandidates {
    */
   useVal(row, col, val) {
     const bit = ~(1 << (val - 1));
-    this.colsMask[col] &= bit;
-    this.rowsMask[row] &= bit;
+    const bit2 = 1 << (val - 1);
     const { blockRow, blockCol } = BitCandidates.getBlockRowCol(row, col);
-    this.blocksMask[blockRow][blockCol] &= bit;
+    if (
+      (this.colsMask[col] & bit2)
+      && (this.rowsMask[row] & bit2)
+      && (this.blocksMask[blockRow][blockCol] & bit2)
+    ) {
+      this.colsMask[col] &= bit;
+      this.rowsMask[row] &= bit;
+      this.blocksMask[blockRow][blockCol] &= bit;
+    } else {
+      throw new Error(`Duplicate in row: ${row}, col: ${col}`);
+    }
   }
 
   /**

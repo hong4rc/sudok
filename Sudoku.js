@@ -29,12 +29,18 @@ class Sudoku {
       this.set(row, col, val);
     });
     if (uniques.length) {
-      this.bitCandidates.getUnique().forEach(({ row, col, val }) => {
+      const next = this.bitCandidates.getUnique();
+      next.forEach(({ row, col, val }) => {
         this.set(row, col, val);
       });
+      uniques.push(...next);
     }
 
-    return this.recursiveSolve();
+    const solved = this.recursiveSolve();
+    uniques.forEach(({ row, col }) => {
+      this.clear(row, col);
+    });
+    return solved;
   }
 
   static repr(grid) {

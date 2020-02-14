@@ -82,23 +82,33 @@ class Sudoku {
       const mask = this.bitCandidates.getMask(row, col);
       for (let val = 1; mask !== 0 && val <= BIG_SQ; val++) {
         if ((mask & (1 << val - 1)) !== 0) {
-          this.bitCandidates.useVal(row, col, val);
-          this.grid[row][col] = val;
+          this.set(row, col, val);
           if (this.recursiveSolve()) {
             found = true;
             if (this.isFull()) {
-              this.grid[row][col] = 0;
-              this.bitCandidates.clearVal(row, col, val);
+              this.clear(row, col);
               break;
             }
           }
           // Try another
-          this.grid[row][col] = 0;
-          this.bitCandidates.clearVal(row, col, val);
+          this.clear(row, col);
         }
       }
       return found;
     }
+  }
+
+  set(row, col, val) {
+    if (this.grid[row][col]) {
+      throw new Error('Cannot set');
+    }
+    this.grid[row][col] = val;
+    this.bitCandidates.useVal(row, col, val);
+  }
+
+  clear(row, col) {
+    this.bitCandidates.clearVal(row, col, this.grid[row][col]);
+    this.grid[row][col] = 0;
   }
 
   // Initialise the candidates data structure by adding the numbers already on the grid

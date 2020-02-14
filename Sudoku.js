@@ -11,7 +11,7 @@ class Sudoku {
    */
   constructor(grid) {
     this.grid = grid;
-    this.bitCandidates = this.initCandidates();
+    this.initCandidates();
     this.results = [];
     this.limit = 0;
   }
@@ -37,6 +37,14 @@ class Sudoku {
     return this.recursiveSolve();
   }
 
+  static repr(grid) {
+    const lines = [];
+    for (let row = 0; row < BIG_SQ; row++) {
+      lines[row] = `  [${grid[row].join(', ')}],`;
+    }
+    return `[\n${lines.join('\n')}\n]`;
+  }
+
   static str(grid) {
     let ret = '';
     for (let row = 0; row < BIG_SQ; row++) {
@@ -57,6 +65,10 @@ class Sudoku {
 
   toString() {
     return Sudoku.str(this.grid);
+  }
+
+  code() {
+    return Sudoku.repr(this.grid);
   }
 
   result(index = 0) {
@@ -133,7 +145,7 @@ class Sudoku {
         }
       }
     }
-    return bitCandidates;
+    this.bitCandidates = bitCandidates;
   }
 
   // The idea is that we always get the cell with less alternatives.
@@ -172,6 +184,39 @@ class Sudoku {
       val >>= 1;
     }
     return count;
+  }
+
+  quizz() {
+    this.solve(1);
+    if (this.results.length === 0) {
+      throw new Error('Can\'t solve this sudoku board');
+    }
+    [this.grid] = this.results;
+    this.initCandidates();
+    const positions = new Array(BIG_SQ * BIG_SQ);
+    for (let i = positions.length - 1; i >= 0; --i) {
+      positions[i] = i;
+    }
+    for (let i = positions.length - 1; i >= 0; --i) {
+      const j = Math.floor(Math.random() * positions.length);
+      const tmp = positions[i];
+      positions[i] = positions[j];
+      positions[j] = tmp;
+    }
+
+    for (let i = positions.length - 1; i >= 0; --i) {
+      const p = positions[i];
+      const row = Math.trunc(p / BIG_SQ);
+      const col = p % BIG_SQ;
+      const val = this.grid[row][col];
+      if (val !== 0) {
+        this.clear(row, col);
+        this.solve(2);
+        if (this.results.length > 1) {
+          this.set(row, col, val);
+        }
+      }
+    }
   }
 }
 

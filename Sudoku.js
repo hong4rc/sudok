@@ -131,6 +131,9 @@ class Sudoku {
             // A cell with fewer options
             topmostCell = { row, col };
             bestNumberOfOptions = numberOfOptions;
+            if (numberOfOptions === 1) {
+              return topmostCell;
+            }
           }
         }
       }

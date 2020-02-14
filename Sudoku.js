@@ -24,6 +24,16 @@ class Sudoku {
   solve(limit = 0) {
     this.limit = limit;
     this.results = [];
+    const uniques = this.bitCandidates.getUnique();
+    uniques.forEach(({ row, col, val }) => {
+      this.set(row, col, val);
+    });
+    if (uniques.length) {
+      this.bitCandidates.getUnique().forEach(({ row, col, val }) => {
+        this.set(row, col, val);
+      });
+    }
+
     return this.recursiveSolve();
   }
 
@@ -142,7 +152,7 @@ class Sudoku {
             // A cell with fewer options
             topmostCell = { row, col };
             bestNumberOfOptions = numberOfOptions;
-            if (numberOfOptions === 1) {
+            if (numberOfOptions === 0) {
               return topmostCell;
             }
           }

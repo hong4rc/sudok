@@ -15,6 +15,11 @@ class BitCandidates {
       }
       this.blocksMask[Math.trunc(i / SMALL_SQ)][i % SMALL_SQ] = ALL_BITS;
     }
+    this.markes = new Array(BIG_SQ);
+
+    for (let i = 0; i < BIG_SQ; ++i) {
+      this.markes[i] = new Array(BIG_SQ);
+    }
   }
 
   /**
@@ -49,6 +54,122 @@ class BitCandidates {
     const { blockRow, blockCol } = BitCandidates.getBlockRowCol(row, col);
     const mask = this.rowsMask[row] & this.colsMask[col] & this.blocksMask[blockRow][blockCol];
     return mask;
+  }
+
+  getUnique() {
+    this.fillAllMark();
+    const uniques = [];
+    for (let row = 0; row < BIG_SQ; ++row) {
+      uniques.push(...this.getUniqueRow(row));
+    }
+    for (let col = 0; col < BIG_SQ; ++col) {
+      uniques.push(...this.getUniqueCol(col));
+    }
+    for (let iRow = 0; iRow < SMALL_SQ; ++iRow) {
+      for (let iCol = 0; iCol < SMALL_SQ; ++iCol) {
+        uniques.push(...this.getUniqueSquare(iRow, iCol));
+      }
+    }
+    return uniques;
+  }
+
+  getUniqueRow(row) {
+    const uniques = [];
+    const rowMask = this.rowsMask[row];
+    if (rowMask === 0) {
+      return uniques;
+    }
+    for (let val = 1; val <= BIG_SQ; val++) {
+      // `val` avaiable is this row
+      if ((rowMask & (1 << val - 1)) !== 0) {
+        let unique = null;
+        for (let col = 0; col < BIG_SQ; ++col) {
+          if ((this.markes[row][col] & (1 << val - 1)) !== 0) {
+            if (unique !== null) {
+              // Exist 2+ cell have val
+              unique = null;
+              break;
+            }
+            unique = { row, col, val };
+          }
+        }
+        if (unique) {
+          uniques.push(unique);
+        }
+      }
+    }
+
+    return uniques;
+  }
+
+  getUniqueCol(col) {
+    const uniques = [];
+    const colMask = this.colsMask[col];
+    if (colMask === 0) {
+      return uniques;
+    }
+    for (let val = 1; 0 && val <= BIG_SQ; val++) {
+      // `val` avaiable is this col
+      if ((colMask & (1 << val - 1)) !== 0) {
+        let unique = null;
+        for (let row = 0; row < BIG_SQ; ++row) {
+          if ((this.markes[row][col] & (1 << val - 1)) !== 0) {
+            if (unique !== null) {
+              // Exist 2+ cell have val
+              unique = null;
+              break;
+            }
+            unique = { col, row, val };
+          }
+        }
+        if (unique) {
+          uniques.push(unique);
+        }
+      }
+    }
+
+    return uniques;
+  }
+
+  getUniqueSquare(iRow, iCol) {
+    const uniques = [];
+    const blockMask = this.blocksMask[iRow][iCol];
+    if (blockMask === 0) {
+      return uniques;
+    }
+    for (let val = 1; 0 && val <= BIG_SQ; val++) {
+      // `val` avaiable is this col
+      if ((blockMask & (1 << val - 1)) !== 0) {
+        let unique = null;
+        for (let dRow = 0; dRow < SMALL_SQ; ++dRow) {
+          for (let dCol = 0; dCol < SMALL_SQ; ++dCol) {
+            const row = iRow * SMALL_SQ + dRow;
+            const col = iCol * SMALL_SQ + iCol;
+            if ((this.markes[row][col] & (1 << val - 1)) !== 0) {
+              if (unique !== null) {
+                // Exist 2+ cell have val
+                unique = null;
+                break;
+              }
+              unique = { col, row, val };
+            }
+          }
+        }
+        if (unique) {
+          uniques.push(unique);
+        }
+      }
+    }
+
+    return uniques;
+  }
+
+  fillAllMark() {
+    for (let row = 0; row < BIG_SQ; ++row) {
+      for (let col = 0; col < BIG_SQ; ++col) {
+        this.markes[row][col] = this.getMask(row, col);
+      }
+    }
   }
 
   /**

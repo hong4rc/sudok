@@ -15,9 +15,12 @@ const grid = [
 const sudoku = new Sudoku(grid);
 
 const start = Date.now();
-if (sudoku.solve()) {
-  console.log('Solved quizz in', Date.now() - start, 'ms');
-  console.log(sudoku.toString());
+console.log(sudoku.toString());
+if (sudoku.solve(1)) {
+  console.log('Solved quizz in', Date.now() - start, 'ms\n');
+  for (let i = 0; i < sudoku.results.length; ++i) {
+    console.log(sudoku.result(i));
+  }
 } else {
   console.log('Impossible!');
 }

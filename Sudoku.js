@@ -12,6 +12,8 @@ class Sudoku {
   constructor(grid) {
     this.grid = grid;
     this.bitCandidates = this.initCandidates();
+    this.results = [];
+    this.limit = 0;
   }
 
   /**
@@ -19,13 +21,15 @@ class Sudoku {
    * @returns true if a solution has been found.
    * The grid passed in the constructor contains the solution itself.
    */
-  solve() {
+  solve(limit = 0) {
+    this.limit = limit;
+    this.results = [];
     return this.recursiveSolve();
   }
 
-  toString() {
+  static str(grid) {
     let ret = '';
-    for (let row = 0; row < this.grid.length; row++) {
+    for (let row = 0; row < grid.length; row++) {
       if (row > 0 && row % SMALL_SQ === 0) {
         ret = `${ret}------+-------+------ \n`;
       }
@@ -33,12 +37,34 @@ class Sudoku {
         if (col > 0 && col % 3 === 0) {
           ret = `${ret}| `;
         }
-        const cell = this.grid[row][col];
+        const cell = grid[row][col];
         ret += (cell ? `${cell.toString()} ` : '. ');
       }
       ret = `${ret}\n`;
     }
     return ret;
+  }
+
+  toString() {
+    return Sudoku.str(this.grid);
+  }
+
+  result(index = 0) {
+    if (index < 0 || index > this.results.length) {
+      throw new Error(`index must be 0..${this.results.length - 1}`);
+    }
+    return Sudoku.str(this.results[index]);
+  }
+
+  capture() {
+    // if (!this.isValid()) {
+    //   throw new Error('Can\'t capture with invalid board');
+    // }
+    this.results.push(JSON.parse(JSON.stringify(this.grid)));
+  }
+
+  isFull() {
+    return this.limit !== 0 && this.results.length >= this.limit;
   }
 
   // The recursive routine that searches the solution
@@ -47,8 +73,11 @@ class Sudoku {
       const rowCol = this.getTopmostCell(this.grid);
       if (!rowCol) {
         // No empty cells, we're done!
+        this.capture();
         return true;
       }
+
+      let found = false;
       const { row, col } = rowCol;
       const mask = this.bitCandidates.getMask(row, col);
       for (let val = 1; mask !== 0 && val <= 9; val++) {
@@ -56,16 +85,19 @@ class Sudoku {
           this.bitCandidates.useVal(row, col, val);
           this.grid[row][col] = val;
           if (this.recursiveSolve()) {
-            // This value allowed the completion
-            return true;
+            found = true;
+            if (this.isFull()) {
+              this.grid[row][col] = 0;
+              this.bitCandidates.clearVal(row, col, val);
+              break;
+            }
           }
-          // Not the good value, try another
+          // Try another
           this.grid[row][col] = 0;
           this.bitCandidates.clearVal(row, col, val);
         }
       }
-      // No values found, unsolvable
-      return false;
+      return found;
     }
   }
 

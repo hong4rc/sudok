@@ -9,3 +9,6 @@ examples/
 
 # Eslint
 .eslintrc
+
+# Test
+__test__/

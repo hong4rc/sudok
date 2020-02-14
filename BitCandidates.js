@@ -43,6 +43,9 @@ class BitCandidates {
    *  Returns the bitmask for the valid values for that cell
    */
   getMask(row, col) {
+    if (this.grid[row][col]) {
+      return 0;
+    }
     const { blockRow, blockCol } = BitCandidates.getBlockRowCol(row, col);
     const mask = this.rowsMask[row] & this.colsMask[col] & this.blocksMask[blockRow][blockCol];
     return mask;

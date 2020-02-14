@@ -114,6 +114,7 @@ class Sudoku {
   // Initialise the candidates data structure by adding the numbers already on the grid
   initCandidates() {
     const bitCandidates = new BitCandidates();
+    bitCandidates.grid = this.grid;
     for (let row = 0; row < BIG_SQ; row++) {
       for (let col = 0; col < BIG_SQ; col++) {
         const val = this.grid[row][col];

@@ -128,6 +128,9 @@ class Sudoku {
 
   set(row, col, val) {
     if (this.grid[row][col]) {
+      if (this.grid[row][col] === val) {
+        return;
+      }
       throw new Error('Cannot set');
     }
     this.grid[row][col] = val;
@@ -135,6 +138,9 @@ class Sudoku {
   }
 
   clear(row, col) {
+    if (this.grid[row][col] === 0) {
+      return;
+    }
     this.bitCandidates.clearVal(row, col, this.grid[row][col]);
     this.grid[row][col] = 0;
   }

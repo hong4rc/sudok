@@ -117,7 +117,7 @@ class BitCandidates {
     if (colMask === 0) {
       return uniques;
     }
-    for (let val = 1; 0 && val <= BIG_SQ; val++) {
+    for (let val = 1; val <= BIG_SQ; val++) {
       // `val` avaiable is this col
       if ((colMask & (1 << val - 1)) !== 0) {
         let unique = null;
@@ -128,7 +128,7 @@ class BitCandidates {
               unique = null;
               break;
             }
-            unique = { col, row, val };
+            unique = { row, col, val };
           }
         }
         if (unique) {
@@ -146,7 +146,7 @@ class BitCandidates {
     if (blockMask === 0) {
       return uniques;
     }
-    for (let val = 1; 0 && val <= BIG_SQ; val++) {
+    for (let val = 1; val <= BIG_SQ; val++) {
       // `val` avaiable is this col
       if ((blockMask & (1 << val - 1)) !== 0) {
         let unique = null;
@@ -160,7 +160,7 @@ class BitCandidates {
                 unique = null;
                 break;
               }
-              unique = { col, row, val };
+              unique = { row, col, val };
             }
           }
         }

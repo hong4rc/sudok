@@ -41,4 +41,17 @@ describe('Sudoku', () => {
     sudoku.solve();
     expect(sudoku.results).toHaveLength(1);
   });
+
+  test('Create quizz from impossible', () => {
+    const sudoku = new Sudoku(listGrid.impossible);
+    expect(() => sudoku.quizz()).toThrowError('Can\'t solve this sudoku board');
+  });
+
+  test('Get string of board', () => {
+    const sudoku = new Sudoku(listGrid.none);
+    sudoku.solve(1);
+    expect(typeof sudoku.toString()).toEqual('string');
+    expect(typeof sudoku.result()).toEqual('string');
+    expect(sudoku.code().match(/\d/g)).toHaveLength(81);
+  });
 });

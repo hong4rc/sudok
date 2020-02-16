@@ -10,6 +10,29 @@ describe('Sudoku', () => {
     });
   });
 
+  test('Out of length result', () => {
+    listGrid.oneResult.forEach((grid) => {
+      const sudoku = new Sudoku(grid);
+      sudoku.solve();
+      expect(() => sudoku.result(2)).toThrowError();
+    });
+  });
+
+  test('Set duplicate', () => {
+    listGrid.oneResult.forEach((grid) => {
+      expect(() => {
+        const sudoku = new Sudoku(grid);
+        sudoku.set(0, 0, 1);
+        sudoku.set(0, 0, 2);
+      }).toThrowError('Cannot set');
+    });
+  });
+
+  test('Fill unique', () => {
+    const sudoku = new Sudoku(listGrid.autofill);
+    sudoku.solve();
+  });
+
   test('Throw invalid grid', () => {
     listGrid.invalid.forEach((grid) => {
       expect(() => new Sudoku(grid)).toThrowError();

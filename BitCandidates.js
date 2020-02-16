@@ -2,6 +2,18 @@ const SMALL_SQ = 3;
 const BIG_SQ = SMALL_SQ * SMALL_SQ;
 const ALL_BITS = 0x1FF; // 9 bits set to 1
 
+const trunc = {
+  0: 0,
+  1: 0,
+  2: 0,
+  3: 1,
+  4: 1,
+  5: 1,
+  6: 2,
+  7: 2,
+  8: 2,
+};
+
 class BitCandidates {
   constructor() {
     this.colsMask = [];
@@ -10,10 +22,10 @@ class BitCandidates {
     for (let i = 0; i < BIG_SQ; i++) {
       this.colsMask[i] = ALL_BITS;
       this.rowsMask[i] = ALL_BITS;
-      if (!this.blocksMask[Math.trunc(i / SMALL_SQ)]) {
-        this.blocksMask[Math.trunc(i / SMALL_SQ)] = [];
+      if (i % SMALL_SQ === 0) {
+        this.blocksMask[trunc[i]] = [];
       }
-      this.blocksMask[Math.trunc(i / SMALL_SQ)][i % SMALL_SQ] = ALL_BITS;
+      this.blocksMask[trunc[i]][i % SMALL_SQ] = ALL_BITS;
     }
     this.markes = new Array(BIG_SQ);
 
@@ -28,7 +40,8 @@ class BitCandidates {
   useVal(row, col, val) {
     const bit = ~(1 << (val - 1));
     const bit2 = 1 << (val - 1);
-    const { blockRow, blockCol } = BitCandidates.getBlockRowCol(row, col);
+    const blockRow = trunc[row];
+    const blockCol = trunc[col];
     if (
       (this.colsMask[col] & bit2)
       && (this.rowsMask[row] & bit2)
@@ -49,7 +62,8 @@ class BitCandidates {
     const bit = (1 << (val - 1));
     this.colsMask[col] |= bit;
     this.rowsMask[row] |= bit;
-    const { blockRow, blockCol } = BitCandidates.getBlockRowCol(row, col);
+    const blockRow = trunc[row];
+    const blockCol = trunc[col];
     this.blocksMask[blockRow][blockCol] |= bit;
   }
 
@@ -60,7 +74,8 @@ class BitCandidates {
     if (this.grid[row][col]) {
       return 0;
     }
-    const { blockRow, blockCol } = BitCandidates.getBlockRowCol(row, col);
+    const blockRow = trunc[row];
+    const blockCol = trunc[col];
     const mask = this.rowsMask[row] & this.colsMask[col] & this.blocksMask[blockRow][blockCol];
     return mask;
   }
@@ -151,7 +166,7 @@ class BitCandidates {
       if ((blockMask & (1 << val - 1)) !== 0) {
         let unique = null;
         for (let i = 0; i < BIG_SQ; ++i) {
-          const row = iRow * SMALL_SQ + Math.trunc(i / 3);
+          const row = iRow * SMALL_SQ + trunc[i];
           const col = iCol * SMALL_SQ + (i % SMALL_SQ);
           if ((this.markes[row][col] & (1 << val - 1)) !== 0) {
             if (unique !== null) {
@@ -177,15 +192,6 @@ class BitCandidates {
         this.markes[row][col] = this.getMask(row, col);
       }
     }
-  }
-
-  /**
-   * Return the row and col of the block of the specified cell
-   */
-  static getBlockRowCol(row, col) {
-    const blockRow = Math.trunc(row / SMALL_SQ);
-    const blockCol = Math.trunc(col / SMALL_SQ);
-    return { blockRow, blockCol };
   }
 }
 

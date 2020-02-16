@@ -58,11 +58,11 @@ class Sudoku {
         ret = `${ret}------+-------+------ \n`;
       }
       for (let col = 0; col < BIG_SQ; col++) {
-        if (col > 0 && col % 3 === 0) {
+        if (col > 0 && col % SMALL_SQ === 0) {
           ret = `${ret}| `;
         }
         const cell = grid[row][col];
-        ret += (cell ? `${cell.toString()} ` : '. ');
+        ret += (cell ? `${cell} ` : '. ');
       }
       ret = `${ret}\n`;
     }

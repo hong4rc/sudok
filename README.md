@@ -70,8 +70,10 @@ Solve all sudoku
 
 ##### limit
 
-Type: `number[][]`
+Type: `number`
+
 Default: 0 (no limit)
+
 Set maximum size of result
 
 #### .toString()
@@ -85,5 +87,7 @@ The virtual result after `solve` with a simple border
 ##### index
 
 Type: `number`
+
 Default: 0
+
 Index of result in a list all results

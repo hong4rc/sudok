@@ -150,18 +150,16 @@ class BitCandidates {
       // `val` avaiable is this col
       if ((blockMask & (1 << val - 1)) !== 0) {
         let unique = null;
-        for (let dRow = 0; dRow < SMALL_SQ; ++dRow) {
-          for (let dCol = 0; dCol < SMALL_SQ; ++dCol) {
-            const row = iRow * SMALL_SQ + dRow;
-            const col = iCol * SMALL_SQ + iCol;
-            if ((this.markes[row][col] & (1 << val - 1)) !== 0) {
-              if (unique !== null) {
-                // Exist 2+ cell have val
-                unique = null;
-                break;
-              }
-              unique = { row, col, val };
+        for (let i = 0; i < BIG_SQ; ++i) {
+          const row = iRow * SMALL_SQ + Math.trunc(i / 3);
+          const col = iCol * SMALL_SQ + (i % SMALL_SQ);
+          if ((this.markes[row][col] & (1 << val - 1)) !== 0) {
+            if (unique !== null) {
+              // Exist 2+ cell have val
+              unique = null;
+              break;
             }
+            unique = { row, col, val };
           }
         }
         if (unique) {

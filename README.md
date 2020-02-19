@@ -1,6 +1,6 @@
 # sudok
 [![version](https://img.shields.io/npm/v/sudok?color=green)](https://www.npmjs.com/package/sudok)
-[![Build Status](https://travis-ci.com/Hongarc/sudok.svg?branch=master)](https://travis-ci.com/Hongarc/sudok)
+[![GitHub CI](https://github.com/Hongarc/sudok/workflows/GitHub%20CI/badge.svg)](https://github.com/Hongarc/sudok/actions?query=workflow%3A%22GitHub+CI%22)
 [![codecov](https://codecov.io/gh/Hongarc/sudok/branch/master/graph/badge.svg)](https://codecov.io/gh/Hongarc/sudok)
 
 > Solver sudoku and other functions

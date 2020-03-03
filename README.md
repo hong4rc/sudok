@@ -52,13 +52,19 @@ console.log(sudoku.toString());
 
 ## API
 
-### new Sudoku(grid)
+### new Sudoku(grid, smallWidth, smallheight)
 
 #### grid
 
 Type: `number[][]`
 
-Array int 2d 9x9, between 1 and 9
+Array int 2d with size is `smallWidth * smallheight`, between 1 and `smallWidth * smallheight`
+
+#### smallWidth, smallheight
+
+Type: `number`
+
+Width and height of small inside big square
 
 ### Instance
 

@@ -1,7 +1,7 @@
 const Sudoku = require('..');
 const listGrid = require('./fixture/grid');
 
-describe('Sudoku', () => {
+describe('Sudoku 3x3', () => {
   test('One result', () => {
     listGrid.oneResult.forEach((grid) => {
       const sudoku = new Sudoku(grid);
@@ -76,5 +76,17 @@ describe('Sudoku', () => {
     expect(typeof sudoku.toString()).toEqual('string');
     expect(typeof sudoku.result()).toEqual('string');
     expect(sudoku.code().match(/\d/g)).toHaveLength(81);
+  });
+});
+
+describe('Sudoku others', () => {
+  test('Test 3x2', () => {
+    const sudoku = new Sudoku(listGrid.test2x3, 3, 2);
+    sudoku.solve(1);
+    expect(sudoku.code().match(/\d/g)).toHaveLength(36);
+  });
+
+  test('Invalid size', () => {
+    expect(() => new Sudoku(listGrid.test2x3)).toThrowError('Invalid input grid');
   });
 });

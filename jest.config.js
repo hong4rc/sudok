@@ -3,5 +3,6 @@ module.exports = {
   collectCoverageFrom: [
     'Sudoku.js',
     'BitCandidates.js',
+    'BCFactory.js',
   ],
 };

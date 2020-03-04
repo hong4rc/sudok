@@ -1,7 +1,10 @@
 {
   "name": "sudok",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Sudoku Node.js",
+  "files": [
+    "dist/index.js"
+  ],
   "main": "dist/index.js",
   "scripts": {
     "build": "rollup -c",

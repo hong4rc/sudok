@@ -1,4 +1,4 @@
-class BitCandidates {
+export default class BitCandidates {
   constructor(factory) {
     this.factory = factory;
     this.colsMask = [];
@@ -179,7 +179,3 @@ class BitCandidates {
     }
   }
 }
-
-module.exports = {
-  BitCandidates,
-};

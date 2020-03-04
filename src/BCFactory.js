@@ -1,8 +1,8 @@
-const { BitCandidates } = require('./BitCandidates');
+import BitCandidates from './BitCandidates';
 
 const map = {};
 
-class BCFactory {
+export default class BCFactory {
   static gen(width, height) {
     const factory = (map[width] || {})[height] || new BCFactory(width, height);
     return new BitCandidates(factory);
@@ -25,6 +25,3 @@ class BCFactory {
     }
   }
 }
-module.exports = {
-  BCFactory,
-};

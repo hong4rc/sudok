@@ -1,6 +1,4 @@
-const {
-  BCFactory,
-} = require('./BCFactory');
+import BCFactory from './BCFactory';
 
 class Sudoku {
   /**

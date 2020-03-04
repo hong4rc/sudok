@@ -12,3 +12,6 @@ package-lock.json
 
 # Coverage directory
 coverage/
+
+# Build by rollup.js
+dist/

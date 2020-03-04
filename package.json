@@ -1,6 +1,6 @@
 {
   "name": "sudok",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Sudoku Node.js",
   "files": [
     "dist/index.js"
@@ -37,6 +37,7 @@
     "eslint-plugin-import": "^2.20.1",
     "jest": "^25.1.0",
     "rollup": "^1.32.0",
+    "rollup-plugin-terser": "^5.2.0",
     "typescript": "^3.8.3"
   }
 }

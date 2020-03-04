@@ -1,5 +1,6 @@
 import resolve from '@rollup/plugin-node-resolve';
 import typescript from '@rollup/plugin-typescript';
+import { terser } from 'rollup-plugin-terser';
 
 export default {
   input: [
@@ -11,6 +12,7 @@ export default {
   },
   plugins: [
     resolve({ modulesOnly: true }),
-    typescript(),
+    typescript({ target: 'ES2015' }),
+    terser(),
   ],
 };

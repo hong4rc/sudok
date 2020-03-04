@@ -1,5 +1,14 @@
+import BCFactory from './BCFactory';
+
 export default class BitCandidates {
-  constructor(factory) {
+  factory: BCFactory;
+  colsMask: number[];
+  rowsMask: number[];
+  blocksMask: number[][];
+  markes: number[][];
+  grid: number[][]
+
+  constructor(factory: BCFactory) {
     this.factory = factory;
     this.colsMask = [];
     this.rowsMask = [];
@@ -22,7 +31,7 @@ export default class BitCandidates {
   /**
    * Marks a value as used for that row, that col and that block
    */
-  useVal(row, col, val) {
+  useVal(row: number, col: number, val: number) {
     const bit = ~(1 << (val - 1));
     const bit2 = 1 << (val - 1);
     const blockRow = this.factory.truncH[row];
@@ -43,7 +52,7 @@ export default class BitCandidates {
   /**
    * Sets a value as available again for that row, that col and that block
    */
-  clearVal(row, col, val) {
+  clearVal(row: number, col: number, val: number) {
     const bit = (1 << (val - 1));
     this.colsMask[col] |= bit;
     this.rowsMask[row] |= bit;
@@ -55,7 +64,7 @@ export default class BitCandidates {
   /**
    *  Returns the bitmask for the valid values for that cell
    */
-  getMask(row, col) {
+  getMask(row: number, col: number) {
     if (this.grid[row][col]) {
       return 0;
     }
@@ -82,7 +91,7 @@ export default class BitCandidates {
     return uniques;
   }
 
-  getUniqueRow(row) {
+  getUniqueRow(row: number) {
     const uniques = [];
     const rowMask = this.rowsMask[row];
     if (rowMask === 0) {
@@ -111,7 +120,7 @@ export default class BitCandidates {
     return uniques;
   }
 
-  getUniqueCol(col) {
+  getUniqueCol(col: number) {
     const uniques = [];
     const colMask = this.colsMask[col];
     if (colMask === 0) {
@@ -140,7 +149,7 @@ export default class BitCandidates {
     return uniques;
   }
 
-  getUniqueSquare(iRow, iCol) {
+  getUniqueSquare(iRow: number, iCol: number) {
     const uniques = [];
     const blockMask = this.blocksMask[iRow][iCol];
     if (blockMask === 0) {

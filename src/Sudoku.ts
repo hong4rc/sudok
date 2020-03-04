@@ -1,14 +1,23 @@
 import BCFactory from './BCFactory';
+import BitCandidates from './BitCandidates';
+
+type Grid = number[][];
 
 class Sudoku {
   /**
    * The constructor of a sudoku. Note that the grid passed as input will be changed during
    * the iterations, and will eventually contain the solution.
-   * @param {Array} grid
-   * @param {number} smallWidth
-   * @param {number} smallHeight
    */
-  constructor(grid, smallWidth = 3, smallHeight = 3) {
+
+  sWidth: number;
+  sHeight: number;
+  bigSq: number;
+  grid: Grid;
+  results: Grid[];
+  limit: number;
+  bitCandidates: BitCandidates;
+
+  constructor(grid: Grid, smallWidth = 3, smallHeight = 3) {
     this.sWidth = smallWidth;
     this.sHeight = smallHeight;
     this.bigSq = smallHeight * smallWidth;
@@ -21,7 +30,7 @@ class Sudoku {
     this.limit = 0;
   }
 
-  valid(arr) {
+  valid(arr: any[]) {
     return Array.isArray(arr) && (arr.length === this.sWidth * this.sHeight);
   }
 
@@ -127,7 +136,7 @@ class Sudoku {
     }
   }
 
-  set(row, col, val) {
+  set(row: number, col: number, val: number) {
     if (this.grid[row][col]) {
       if (this.grid[row][col] === val) {
         return;
@@ -138,7 +147,7 @@ class Sudoku {
     this.bitCandidates.useVal(row, col, val);
   }
 
-  clear(row, col) {
+  clear(row: number, col: number) {
     if (this.grid[row][col] === 0) {
       return;
     }
@@ -165,7 +174,7 @@ class Sudoku {
   // Ideally, this should let us to quickly identify situations with no solution:
   // if a cell admits only one value, for instance, it's better if we try that one
   // sooner than later.
-  getTopmostCell(grid) {
+  getTopmostCell(grid: Grid) {
     let topmostCell = null;
     let bestNumberOfOptions = Number.MAX_VALUE;
     for (let row = 0; row < this.bigSq; ++row) {
@@ -188,7 +197,7 @@ class Sudoku {
   }
 
   // Counts how many bits are set in val
-  static countBits(val) {
+  static countBits(val: number) {
     let count = 0;
     while (val) {
       if (val & 1) {

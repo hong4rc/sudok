@@ -8,7 +8,18 @@ export default class BCFactory {
     return new BitCandidates(factory);
   }
 
-  constructor(width, height) {
+  width: number;
+  height: number;
+  length: number;
+  allBit: number;
+  truncH: {
+    [key: number]: number;
+  }
+  truncW: {
+    [key: number]: number;
+  }
+
+  constructor(width: number, height: number) {
     this.width = width;
     this.height = height;
     this.length = width * height;

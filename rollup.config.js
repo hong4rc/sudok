@@ -1,8 +1,9 @@
 import resolve from '@rollup/plugin-node-resolve';
+import typescript from '@rollup/plugin-typescript';
 
 export default {
   input: [
-    './src/Sudoku.js',
+    './src/Sudoku.ts',
   ],
   output: {
     sourcemap: true,
@@ -10,5 +11,6 @@ export default {
   },
   plugins: [
     resolve({ modulesOnly: true }),
+    typescript(),
   ],
 };
